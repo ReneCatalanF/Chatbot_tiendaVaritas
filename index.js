@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { WebhookClient } = require('dialogflow-fulfillment');
 const TelegramBot = require('node-telegram-bot-api');
+const { SessionsClient } = require('@google-cloud/dialogflow-cx');
 
 const app = express();
 app.use(bodyParser.json());
