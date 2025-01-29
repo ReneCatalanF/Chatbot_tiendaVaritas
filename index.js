@@ -53,8 +53,20 @@ app.post('/webhook', (req, res) => {
   const telegramMessage = req.body.message.text; // Texto del mensaje del usuario
   const chatId = req.body.message.chat.id;      // ID del chat de Telegram
 
-  // Crear un agente de Dialogflow
-  const agent = new WebhookClient({ request: req, response: res });
+  // Crear un objeto de solicitud en el formato que Dialogflow espera
+  const dialogflowRequest = {
+    queryResult: {
+      queryText: telegramMessage, // El mensaje del usuario
+      intent: {
+        displayName: "" // El intent se determinará en Dialogflow
+      },
+      parameters: {}, // Parámetros vacíos (puedes agregarlos si es necesario)
+      fulfillmentText: "" // Respuesta vacía (se llenará en Dialogflow)
+    }
+  };
+
+  // Crear el agente de Dialogflow con la solicitud transformada
+  const agent = new WebhookClient({ request: { body: dialogflowRequest }, response: res });
 
   // Función para manejar la respuesta de Dialogflow
   function dialogflowFulfillment(agent) {
