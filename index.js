@@ -43,6 +43,7 @@ console.log('Agente de Dialogflow configurado.');
 
 app.post('/webhook', (req, res) => {
   console.log('Solicitud recibida en /webhook:', req.body);
+  console.log('y el');
 
   // 1. Obtener el mensaje de Telegram
   const telegramMessage = req.body.message.text; // Texto del mensaje del usuario
@@ -55,7 +56,8 @@ app.post('/webhook', (req, res) => {
 
   // 2. Enviar el mensaje a Dialogflow
   try {
-    const agent = new WebhookClient({ request: { body: { queryResult: { queryText: telegramMessage } }, response: res }});
+    
+    const agent = new WebhookClient({ request: { body: { queryResult: { queryText: telegramMessage } }}, response: res });
 
     function dialogflowFulfillment(agent) {
       console.log('Intent detectado:', agent.intent);
