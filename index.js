@@ -48,9 +48,13 @@ app.post('/webhook', (req, res) => {
   function dialogflowFulfillment(agent) {
     console.log('Intent detectado:', agent.intent);
 
-    agent.setResponse(agent.originalRequest.body.queryResult.fulfillmentMessages);
+    // Access Telegram chat ID from the Dialogflow request
+    const chatId = agent.originalRequest.body.message.chat.id;  // Correct way to access chat ID
 
-    console.log('Respuesta enviada:', agent.response);
+    // Send the Dialogflow response to Telegram
+    telegramBot.sendMessage(chatId, agent.fulfillmentText);
+
+    console.log('Respuesta enviada:', agent.fulfillmentText); // Log the actual response text
   }
 
   agent.handleRequest(dialogflowFulfillment);
