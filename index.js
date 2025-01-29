@@ -43,38 +43,45 @@ console.log('Agente de Dialogflow configurado.');
 
 app.post('/webhook', (req, res) => {
   console.log('Solicitud recibida en /webhook:', req.body);
-  console.log('y el');
 
-  // 1. Obtener el mensaje de Telegram
+  // Verificar si el cuerpo de la solicitud contiene un mensaje de Telegram
+  if (!req.body.message || !req.body.message.text) {
+    console.log("No se recibió ningún mensaje de texto de Telegram. Ignorando.");
+    return res.sendStatus(200); // Responder a Telegram para evitar reintentos
+  }
+
   const telegramMessage = req.body.message.text; // Texto del mensaje del usuario
   const chatId = req.body.message.chat.id;      // ID del chat de Telegram
 
-  if (!telegramMessage) {
-    console.log("No se recibió ningún mensaje de texto de Telegram. Ignorando.");
-    return res.sendStatus(200); // Importante: Responder a Telegram para evitar reintentos
-  }
+  // Crear un agente de Dialogflow
+  const agent = new WebhookClient({ request: req, response: res });
 
-  // 2. Enviar el mensaje a Dialogflow
-  try {
-    
-    const agent = new WebhookClient({ request: { body: { queryResult: { queryText: telegramMessage } }}, response: res });
+  // Función para manejar la respuesta de Dialogflow
+  function dialogflowFulfillment(agent) {
+    console.log('Intent detectado:', agent.intent);
 
-    function dialogflowFulfillment(agent) {
-      console.log('Intent detectado:', agent.intent);
-
-      if (agent.intent === "PagarVaritaSinCrear") {
-        res.send("Probando webhook");
-      }
-      // Envía la respuesta de Dialogflow ES a Telegram
-      telegramBot.sendMessage(chatId, agent.fulfillmentText);
-      agent.add('');
+    // Manejar el intent específico "PagarVaritaSinCrear"
+    if (agent.intent === "PagarVaritaSinCrear") {
+      console.log("Intent 'PagarVaritaSinCrear' detectado.");
+      agent.add("Probando webhook para PagarVaritaSinCrear");
     }
 
-    agent.handleRequest(dialogflowFulfillment);
-  } catch (error) {
-    console.error("Error al crear WebhookClient:", error);
-    res.status(500).send("Ocurrió un error al procesar la solicitud.");
+    // Enviar la respuesta de Dialogflow a Telegram
+    telegramBot.sendMessage(chatId, agent.fulfillmentText)
+      .then(() => {
+        console.log('Respuesta enviada a Telegram:', agent.fulfillmentText);
+      })
+      .catch(error => {
+        console.error('Error al enviar mensaje a Telegram:', error);
+      });
   }
+
+  // Manejar la solicitud con el agente de Dialogflow
+  agent.handleRequest(dialogflowFulfillment)
+    .catch(error => {
+      console.error("Error al manejar la solicitud con Dialogflow:", error);
+      res.status(500).send("Ocurrió un error al procesar la solicitud.");
+    });
 });
 
 // Ruta para verificar el bot de Telegram (opcional)
