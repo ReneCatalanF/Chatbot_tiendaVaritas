@@ -40,6 +40,8 @@ process.env.GOOGLE_APPLICATION_CREDENTIALS = {
 };
 console.log('Agente de Dialogflow configurado.');
 
+const dialogflowClient = new SessionsClient();
+
 app.post('/webhook', (req, res) => {
   console.log('Solicitud recibida en /webhook:', req.body);
 
