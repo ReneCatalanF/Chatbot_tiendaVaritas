@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { WebhookClient } = require('dialogflow-fulfillment');
 const TelegramBot = require('node-telegram-bot-api');
-const { SessionsClient } = require('@google-cloud/dialogflow-cx');
 
 const app = express();
 app.use(bodyParser.json());
@@ -41,7 +40,6 @@ process.env.GOOGLE_APPLICATION_CREDENTIALS = {
 };
 console.log('Agente de Dialogflow configurado.');
 
-const dialogflowClient = new SessionsClient();
 
 app.post('/webhook', (req, res) => {
   console.log('Solicitud recibida en /webhook:', req.body);
@@ -57,36 +55,16 @@ app.post('/webhook', (req, res) => {
 
   // 2. Enviar el mensaje a Dialogflow
   try {
-    // Crea la solicitud para Dialogflow ES
-    const dialogflowRequest = {
-      session: `projects/${process.env.DIALOGFLOW_PROJECT_ID}/locations/global/agent/sessions/${chatId}`, // ID de sesión único
-      queryInput: {
-        text: {
-          text: telegramMessage, // El mensaje del usuario desde Telegram
-        },
-        languageCode: 'es-ES', // Código de idioma (ajusta si es necesario)
-      },
-    };
+    const agent = new WebhookClient({ request: { body: { queryResult: { queryText: telegramMessage } }, response: res }});
 
-    dialogflowClient.detectIntent(dialogflowRequest)
-      .then(dialogflowResponse => {
-        console.log("Respuesta de Dialogflow:", dialogflowResponse);
+    function dialogflowFulfillment(agent) {
+      console.log('Intent detectado:', agent.intent);
 
-        const fulfillmentText = dialogflowResponse.queryResult.fulfillmentText;
+      // Envía la respuesta de Dialogflow ES a Telegram
+      telegramBot.sendMessage(chatId, agent.fulfillmentText);
+    }
 
-        if (fulfillmentText) {
-          telegramBot.sendMessage(chatId, fulfillmentText);
-        } else if (dialogflowResponse.queryResult.fulfillmentMessages && dialogflowResponse.queryResult.fulfillmentMessages.length > 0) {
-          const message = dialogflowResponse.queryResult.fulfillmentMessages[0].text.text[0];
-          telegramBot.sendMessage(chatId, message);
-        } else {
-          telegramBot.sendMessage(chatId, "No se pudo obtener una respuesta de Dialogflow.");
-        }
-      })
-      .catch(error => {
-        console.error("Error al contactar a Dialogflow:", error);
-        telegramBot.sendMessage(chatId, "Ocurrió un error al procesar tu solicitud.");
-      });
+    agent.handleRequest(dialogflowFulfillment);
   } catch (error) {
     console.error("Error al crear WebhookClient:", error);
     res.status(500).send("Ocurrió un error al procesar la solicitud.");
