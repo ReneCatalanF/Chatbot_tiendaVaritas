@@ -62,6 +62,7 @@ app.post('/webhook', (req, res) => {
 
       // Envía la respuesta de Dialogflow ES a Telegram
       telegramBot.sendMessage(chatId, agent.fulfillmentText);
+      agent.add('');
     }
 
     agent.handleRequest(dialogflowFulfillment);
