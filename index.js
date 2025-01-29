@@ -62,6 +62,9 @@ app.post('/webhook', (req, res) => {
     function dialogflowFulfillment(agent) {
       console.log('Intent detectado:', agent.intent);
 
+      if (agent.intent === "PagarVaritaSinCrear") {
+        res.send("Probando webhook");
+      }
       // Envía la respuesta de Dialogflow ES a Telegram
       telegramBot.sendMessage(chatId, agent.fulfillmentText);
       agent.add('');
