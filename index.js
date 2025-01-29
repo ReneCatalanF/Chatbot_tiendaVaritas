@@ -43,21 +43,59 @@ console.log('Agente de Dialogflow configurado.');
 app.post('/webhook', (req, res) => {
   console.log('Solicitud recibida en /webhook:', req.body);
 
-  const agent = new WebhookClient({ request: req, response: res });
+  // 1. Obtener el mensaje de Telegram
+  const telegramMessage = req.body.message.text; // Texto del mensaje del usuario
+  const chatId = req.body.message.chat.id;      // ID del chat de Telegram
 
-  function dialogflowFulfillment(agent) {
-    console.log('Intent detectado:', agent.intent);
-
-    // Access Telegram chat ID from the Dialogflow request
-    const chatId = agent.originalRequest.body.message.chat.id;  // Correct way to access chat ID
-
-    // Send the Dialogflow response to Telegram
-    telegramBot.sendMessage(chatId, agent.fulfillmentText);
-
-    console.log('Respuesta enviada:', agent.fulfillmentText); // Log the actual response text
+  if (!telegramMessage) {
+    console.log("No se recibió ningún mensaje de texto de Telegram. Ignorando.");
+    return res.sendStatus(200); // Importante: Responder a Telegram para evitar reintentos
   }
 
-  agent.handleRequest(dialogflowFulfillment);
+  // 2. Enviar el mensaje a Dialogflow
+  try {
+    const agent = new WebhookClient({ request: req, response: res });
+
+    function dialogflowFulfillment(agent) {
+      console.log('Intent detectado:', agent.intent);
+
+      // Crea la solicitud para Dialogflow ES
+      const dialogflowRequest = {
+        session: `projects/${process.env.DIALOGFLOW_PROJECT_ID}/locations/global/agent/sessions/${chatId}`, // ID de sesión único
+        queryInput: {
+          text: {
+            text: telegramMessage, // El mensaje del usuario desde Telegram
+          },
+          languageCode: 'es-ES', // Código de idioma (ajusta si es necesario)
+        },
+      };
+
+      dialogflowClient.detectIntent(dialogflowRequest)
+        .then(dialogflowResponse => {
+          console.log("Respuesta de Dialogflow:", dialogflowResponse);
+
+          const fulfillmentText = dialogflowResponse.queryResult.fulfillmentText;
+
+          if (fulfillmentText) {
+            telegramBot.sendMessage(chatId, fulfillmentText);
+          } else if (dialogflowResponse.queryResult.fulfillmentMessages && dialogflowResponse.queryResult.fulfillmentMessages.length > 0) {
+            const message = dialogflowResponse.queryResult.fulfillmentMessages[0].text.text[0];
+            telegramBot.sendMessage(chatId, message);
+          } else {
+            telegramBot.sendMessage(chatId, "No se pudo obtener una respuesta de Dialogflow.");
+          }
+        })
+        .catch(error => {
+          console.error("Error al contactar a Dialogflow:", error);
+          telegramBot.sendMessage(chatId, "Ocurrió un error al procesar tu solicitud.");
+        });
+    }
+
+    agent.handleRequest(dialogflowFulfillment);
+  } catch (error) {
+    console.error("Error al crear WebhookClient:", error);
+    res.status(500).send("Ocurrió un error al procesar la solicitud.");
+  }
 });
 
 // Ruta para verificar el bot de Telegram (opcional)
