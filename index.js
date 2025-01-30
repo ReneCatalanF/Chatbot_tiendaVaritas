@@ -48,35 +48,30 @@ app.post('/webhook', (req, res) => {
   } else if (intentName === 'InformacionVaritasFamosas') {
     const nombreVarita = String(req.body.queryResult.parameters.nombreVarita);
 
-    // Normalizar el nombre de la varita para la búsqueda
+    // Normalizar el nombre de la varita
     const nombreNormalizado = nombreVarita.trim().toLowerCase();
 
-    // Buscar la varita por dueño (nombre completo)
-    let varitaEncontrada = varitas[nombreNormalizado];
+    // Buscar la varita utilizando búsqueda difusa
+    const resultados = fuzzy.filter(nombreNormalizado, Object.keys(varitas));
 
-    // Si no se encuentra por dueño, buscar por nombre o apellido
-    if (!varitaEncontrada) {
-      for (const nombre in varitas) {
-        const dueño = varitas[nombre].dueño.toLowerCase();
-        if (dueño.includes(nombreNormalizado)) {
-          varitaEncontrada = varitas[nombre];
-          break;
-        }
-      }
-    }
+    if (resultados.length > 0) {
+      const mejorCoincidencia = resultados[0].string;
+      const varitaEncontrada = varitas[mejorCoincidencia];
 
-    if (varitaEncontrada) {
+      // Utilizar el contexto para personalizar la respuesta (opcional)
+      let respuesta = `Información sobre la varita de ${varitaEncontrada.dueño}:\n`;
+      respuesta += `Madera: ${varitaEncontrada.madera}\n`;
+      respuesta += `Núcleo: ${varitaEncontrada.nucleo}\n`;
+      respuesta += `Longitud: ${varitaEncontrada.longitud}`;
+
+
       const fulfillmentResponse = {
-        fulfillmentText: `Información sobre la varita de ${varitaEncontrada.dueño}:\n
-          Madera: ${varitaEncontrada.madera}\n
-          Núcleo: ${varitaEncontrada.nucleo}\n
-          Longitud: ${varitaEncontrada.longitud}`
+        fulfillmentText: respuesta
       };
       res.json(fulfillmentResponse);
     } else {
       const fulfillmentResponse = {
-        fulfillmentText: `No se encontró información sobre la varita. 
-        Asegúrate de que el nombre esté escrito correctamente (Nombre Apellido, por ejemplo "Harry Potter").`
+        fulfillmentText: `No se encontró información sobre la varita. Por favor, verifica la ortografía o intenta con otro nombre.`
       };
       res.json(fulfillmentResponse);
     }
