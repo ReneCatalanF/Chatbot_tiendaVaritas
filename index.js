@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const fuzzy = require('fuzzy');
 
 const app = express();
 app.use(bodyParser.json());
