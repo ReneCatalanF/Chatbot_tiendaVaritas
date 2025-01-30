@@ -26,7 +26,7 @@ if (!process.env.DIALOGFLOW_TYPE || !process.env.DIALOGFLOW_PROJECT_ID || !proce
   console.error('Error: Variables de entorno de Dialogflow no definidas.');
   process.exit(1);
 }
-process.env.GOOGLE_APPLICATION_CREDENTIALS = {
+process.env.GOOGLE_APPLICATION_CREDENTIALS = JSON.stringify( {
   type: process.env.DIALOGFLOW_TYPE,
   project_id: process.env.DIALOGFLOW_PROJECT_ID,
   private_key_id: process.env.DIALOGFLOW_PRIVATE_KEY_ID,
@@ -37,7 +37,7 @@ process.env.GOOGLE_APPLICATION_CREDENTIALS = {
   token_uri: process.env.DIALOGFLOW_TOKEN_URI,
   auth_provider_x509_cert_url: process.env.DIALOGFLOW_AUTH_PROVIDER_X509_CERT_URL,
   client_x509_cert_url: process.env.DIALOGFLOW_CLIENT_X509_CERT_URL,
-};
+});
 console.log('Agente de Dialogflow configurado.');
 
 
@@ -75,6 +75,7 @@ app.post('/webhook', (req, res) => {
     // Manejar el intent específico "PagarVaritaSinCrear"
     if (agent.intent === "PagarVaritaSinCrear") {
       console.log("Intent 'PagarVaritaSinCrear' detectado.");
+      
       agent.add("Probando webhook para PagarVaritaSinCrear");
     }
 
@@ -85,6 +86,7 @@ app.post('/webhook', (req, res) => {
       })
       .catch(error => {
         console.error('Error al enviar mensaje a Telegram:', error);
+        res.status(500).send("Ocurrió un error al procesar la solicitud.");
       });
   }
 
