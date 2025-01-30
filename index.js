@@ -86,7 +86,6 @@ app.post('/webhook', (req, res) => {
       })
       .catch(error => {
         console.error('Error al enviar mensaje a Telegram:', error);
-        res.status(500).send("Ocurrió un error al procesar la solicitud.");
       });
   }
 
