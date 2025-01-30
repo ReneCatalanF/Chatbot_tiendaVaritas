@@ -7,9 +7,9 @@ app.use(bodyParser.json());
 app.post('/webhook', (req, res) => {
   const intentName = req.body.queryResult.intent.displayName;
 
-  if (intentName === 'XX') { // Reemplaza 'XX' con el nombre de tu intent
+  if (intentName === 'InformaciónSobreTienda') { // Reemplaza 'XX' con el nombre de tu intent
     const fulfillmentResponse = {
-      fulfillmentText: 'HOLA PRUEBA'
+      fulfillmentText: 'Somos Tienda Varita Mágica, un gusto!'
     };
     res.json(fulfillmentResponse);
   } else {
