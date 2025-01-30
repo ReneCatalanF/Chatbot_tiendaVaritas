@@ -70,6 +70,8 @@ app.post('/webhook', (req, res) => {
   // Crear el agente de Dialogflow con la solicitud transformada
   //const agent = new WebhookClient({ request: { body: dialogflowRequest }, response: res });
 
+
+  
   dialogflowClient.detectIntent(dialogflowRequest)
     .then(dialogflowResponse => {
       console.log('Respuesta de Dialogflow:', dialogflowResponse);
