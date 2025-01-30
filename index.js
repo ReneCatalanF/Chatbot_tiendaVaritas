@@ -42,7 +42,7 @@ const credentials = {
   client_x509_cert_url: process.env.DIALOGFLOW_CLIENT_X509_CERT_URL,
 };
 
-const dialogflowClient = new SessionsClient({ credentials });
+const dialogflowClient = new SessionsClient({ credentials, apiEndpoint: 'dialogflow.googleapis.com' });
 console.log('Agente de Dialogflow configurado.');
 
 
