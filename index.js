@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const { WebhookClient } = require('dialogflow-fulfillment');
 const TelegramBot = require('node-telegram-bot-api');
 const { SessionsClient } = require('@google-cloud/dialogflow-cx');
+
 const uuid = require('uuid');
 
 const app = express();
@@ -61,7 +62,7 @@ app.post('/webhook', (req, res) => {
   try {
     // Crear un objeto de solicitud en el formato que Dialogflow espera
     const dialogflowRequest = {
-      session: `projects/${process.env.DIALOGFLOW_PROJECT_ID.trim()}/locations/global/agents/sessions/${uuid.v4()}`,
+      session: `projects/${process.env.DIALOGFLOW_PROJECT_ID}/locations/global/agent/sessions/${chatId}`,
       queryInput: {
         text: {
           text: telegramMessage,
