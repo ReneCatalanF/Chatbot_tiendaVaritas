@@ -46,7 +46,7 @@ app.post('/webhook', (req, res) => {
     };
     res.json(fulfillmentResponse);
   } else if (intentName === 'InformacionVaritasFamosas') {
-    const nombreVarita = req.body.queryResult.parameters.nombreVarita;
+    const nombreVarita = String(req.body.queryResult.parameters.nombreVarita);
 
     // Normalizar el nombre de la varita para la búsqueda
     const nombreNormalizado = nombreVarita.trim().toLowerCase();
