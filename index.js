@@ -27,7 +27,7 @@ if (!process.env.DIALOGFLOW_TYPE || !process.env.DIALOGFLOW_PROJECT_ID || !proce
   console.error('Error: Variables de entorno de Dialogflow no definidas.');
   process.exit(1);
 }
-process.env.GOOGLE_APPLICATION_CREDENTIALS = JSON.stringify( {
+const credentials = {
   type: process.env.DIALOGFLOW_TYPE,
   project_id: process.env.DIALOGFLOW_PROJECT_ID,
   private_key_id: process.env.DIALOGFLOW_PRIVATE_KEY_ID,
@@ -38,10 +38,11 @@ process.env.GOOGLE_APPLICATION_CREDENTIALS = JSON.stringify( {
   token_uri: process.env.DIALOGFLOW_TOKEN_URI,
   auth_provider_x509_cert_url: process.env.DIALOGFLOW_AUTH_PROVIDER_X509_CERT_URL,
   client_x509_cert_url: process.env.DIALOGFLOW_CLIENT_X509_CERT_URL,
-});
+};
+
+const dialogflowClient = new SessionsClient({ credentials });
 console.log('Agente de Dialogflow configurado.');
 
-const dialogflowClient = new SessionsClient();
 
 app.post('/webhook', (req, res) => {
   console.log('Solicitud recibida en /webhook:', req.body);
@@ -71,7 +72,7 @@ app.post('/webhook', (req, res) => {
   //const agent = new WebhookClient({ request: { body: dialogflowRequest }, response: res });
 
 
-  
+
   dialogflowClient.detectIntent(dialogflowRequest)
     .then(dialogflowResponse => {
       console.log('Respuesta de Dialogflow:', dialogflowResponse);
