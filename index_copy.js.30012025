@@ -3,7 +3,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { WebhookClient } = require('dialogflow-fulfillment');
 const TelegramBot = require('node-telegram-bot-api');
-const { SessionsClient } = require('@google-cloud/dialogflow-cx');
 
 const app = express();
 app.use(bodyParser.json());
@@ -41,7 +40,6 @@ process.env.GOOGLE_APPLICATION_CREDENTIALS = JSON.stringify( {
 });
 console.log('Agente de Dialogflow configurado.');
 
-const dialogflowClient = new SessionsClient();
 
 app.post('/webhook', (req, res) => {
   console.log('Solicitud recibida en /webhook:', req.body);
@@ -57,36 +55,46 @@ app.post('/webhook', (req, res) => {
 
   // Crear un objeto de solicitud en el formato que Dialogflow espera
   const dialogflowRequest = {
-    session: `projects/${process.env.DIALOGFLOW_PROJECT_ID}/locations/global/agent/sessions/${chatId}`,
-    queryInput: {
-      text: {
-        text: telegramMessage,
+    queryResult: {
+      queryText: telegramMessage, // El mensaje del usuario
+      intent: {
+        displayName: "" // El intent se determinará en Dialogflow
       },
-      languageCode: 'es-ES',
-    },
+      parameters: {}, // Parámetros vacíos (puedes agregarlos si es necesario)
+      fulfillmentText: "" // Respuesta vacía (se llenará en Dialogflow)
+    }
   };
 
   console.log('Solicitud a DialogFlow: ',dialogflowRequest);
   // Crear el agente de Dialogflow con la solicitud transformada
   const agent = new WebhookClient({ request: { body: dialogflowRequest }, response: res });
 
-  dialogflowClient.detectIntent(dialogflowRequest)
-    .then(dialogflowResponse => {
-      console.log('Respuesta de Dialogflow:', dialogflowResponse);
+  // Función para manejar la respuesta de Dialogflow
+  function dialogflowFulfillment(agent) {
+    console.log('Intent detectado:', agent.intent);
 
-      const fulfillmentText = dialogflowResponse.queryResult.fulfillmentText;
+    // Manejar el intent específico "PagarVaritaSinCrear"
+    if (agent.intent === "PagarVaritaSinCrear") {
+      console.log("Intent 'PagarVaritaSinCrear' detectado.");
+      
+      agent.add("Probando webhook para PagarVaritaSinCrear");
+    }
 
-      telegramBot.sendMessage(chatId, fulfillmentText)
-        .then(() => {
-          console.log('Respuesta enviada a Telegram:', fulfillmentText);
-        })
-        .catch(error => {
-          console.error('Error al enviar mensaje a Telegram:', error);
-        });
-    })
+    // Enviar la respuesta de Dialogflow a Telegram
+    telegramBot.sendMessage(chatId, agent.fulfillmentText)
+      .then(() => {
+        console.log('Respuesta enviada a Telegram:', agent.fulfillmentText);
+      })
+      .catch(error => {
+        console.error('Error al enviar mensaje a Telegram:', error);
+      });
+  }
+
+  // Manejar la solicitud con el agente de Dialogflow
+  agent.handleRequest(dialogflowFulfillment)
     .catch(error => {
-      console.error('Error al contactar a Dialogflow:', error);
-      res.status(500).send('Ocurrió un error al procesar la solicitud.');
+      console.error("Error al manejar la solicitud con Dialogflow:", error);
+      res.status(500).send("Ocurrió un error al procesar la solicitud.");
     });
 });
 
