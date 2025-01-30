@@ -51,13 +51,17 @@ app.post('/webhook', (req, res) => {
 
     // Normalizar el nombre de la varita
     const nombreNormalizado = nombreVarita.trim().toLowerCase();
+    console.log('Nombre normalizado:', nombreNormalizado);
 
     // Buscar la varita utilizando búsqueda difusa
     const resultados = fuzzy.filter(nombreNormalizado, Object.keys(varitas));
 
     if (resultados.length > 0) {
       const mejorCoincidencia = resultados[0].string;
+      console.log('Mejor coincidencia:', mejorCoincidencia);
       const varitaEncontrada = varitas[mejorCoincidencia];
+      console.log('Varita entontrada', varitaEncontrada);
+      
 
       // Utilizar el contexto para personalizar la respuesta (opcional)
       let respuesta = `Información sobre la varita de ${varitaEncontrada.dueño}:\n`;
@@ -71,6 +75,7 @@ app.post('/webhook', (req, res) => {
       };
       res.json(fulfillmentResponse);
     } else {
+      console.log('No se encontró ninguna coincidencia para:', nombreNormalizado);
       const fulfillmentResponse = {
         fulfillmentText: `No se encontró información sobre la varita. Por favor, verifica la ortografía o intenta con otro nombre.`
       };
