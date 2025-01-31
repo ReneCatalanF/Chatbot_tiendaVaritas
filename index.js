@@ -53,7 +53,7 @@ app.post('/webhook', (req, res) => {
 
     // Normalizar el nombre de la varita (convertir a minúsculas y eliminar espacios extra)
     const inputNormalizado = input.toLowerCase().trim();
-    console.log('Nombre normalizado:', inputNormalizado);
+    console.log('Nombre normalizado:', inputNormalizado.toString());
 
     //DUEÑO encontrado
     const dueñoEncontrado = "";
