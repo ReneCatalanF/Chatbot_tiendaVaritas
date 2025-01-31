@@ -47,13 +47,13 @@ app.post('/webhook', (req, res) => {
     };
     res.json(fulfillmentResponse);
   } else if (intentName === 'InformacionVaritasFamosas') {
-    const input = String(req.body.queryResult.parameters.nombreVarita);
+    const input = req.body.queryResult.parameters.nombreVarita.stringValue;
 
 
 
     // Normalizar el nombre de la varita (convertir a minúsculas y eliminar espacios extra)
     const inputNormalizado = input.toLowerCase().trim();
-    console.log('Nombre normalizado:', inputNormalizado.toString());
+    console.log('Nombre normalizado:', inputNormalizado);
 
     //DUEÑO encontrado
     const dueñoEncontrado = "";
