@@ -53,7 +53,7 @@ app.post('/webhook', (req, res) => {
 
   if (intentName === 'InformacionSobreTienda') {
     const fulfillmentResponse = {
-      fulfillmentText: 'HOLA! Somos la tienda de varitas mágicas!'
+      fulfillmentText: 'No seas un mago sin varita. ¡Ven a nuestro caldero y encuentra la tuya! \n Somos el Caldero No Chorreante ubicados en la calle Gringotts 17 \n \n Dueño actual René Ignacio Catalán Figueroa, un Saludo!'
     };
     res.json(fulfillmentResponse);
   } else if (intentName === 'InformacionVaritasFamosas') {
