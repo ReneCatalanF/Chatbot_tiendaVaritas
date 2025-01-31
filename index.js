@@ -58,7 +58,7 @@ app.post('/webhook', (req, res) => {
     res.json(fulfillmentResponse);
   } else if (intentName === 'InformacionVaritasFamosas') {
     console.log(req.body);
-    const input = req.body.queryResult.parameters.nombreVarita.name;
+    const input = req.body.queryResult.parameters.nombreVarita;
     console.log("nombre sin normalizar: ", input)
     // Validación del nombre (ya que es obligatorio)
     if (!input) {
