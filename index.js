@@ -182,67 +182,144 @@ const varitas = {
     descripcion: "Una varita oscura y poderosa, utilizada para realizar hechizos malignos."
   },
   "Lucius Malfoy (varita original)": {
-        dueño: "Lucius Malfoy (joven)",
-        madera: "Laurel",
+    dueño: "Lucius Malfoy (joven)",
+    madera: "Laurel",
+    núcleo: "Vena de dragón",
+    longitud: "12 pulgadas",
+    descripcion: "La primera varita de Lucius Malfoy, antes de obtener la de Voldemort."
+  },
+  "Dolores Umbridge": {
+    dueño: "Dolores Umbridge",
+    madera: "Avellano",
+    núcleo: "Pena de fénix",
+    longitud: "9 pulgadas",
+    descripcion: "Una varita elegante pero oscura, reflejando la personalidad cruel de su dueña."
+  },
+  "Peter Pettigrew (Colagusano)": {
+    dueño: "Peter Pettigrew",
+    madera: "Abedul",
+    núcleo: "Pelo de rata",
+    longitud: "10 pulgadas",
+    descripcion: "Una varita débil y poco confiable, reflejando la cobardía de su dueño."
+  },
+  "Quirrell": {
+    dueño: "Quirrell",
+    madera: "Olmo",
+    núcleo: "Pelo de unicornio",
+    longitud: "11 pulgadas",
+    descripcion: "Una varita sencilla, utilizada por un mago débil y cobarde."
+  },
+  "Gilderoy Lockhart": {
+    dueño: "Gilderoy Lockhart",
+    madera: "Laurel",
+    núcleo: "Plumas de pavo real",
+    longitud: "12 pulgadas",
+    descripcion: "Una varita vistosa pero ineficaz, utilizada por un mago vanidoso y mentiroso."
+  },
+  "Argus Filch": {
+    dueño: "Argus Filch",
+    madera: "Roble",
+    núcleo: "Espina de puercoespín",
+    longitud: "14 pulgadas",
+    descripcion: "Una varita robusta, utilizada para mantener el orden en Hogwarts."
+  },
+  "Madame Hooch": {
+    dueño: "Madame Hooch",
+    madera: "Fresno",
+    núcleo: "Cola de unicornio",
+    longitud: "12 pulgadas",
+    descripcion: "Una varita precisa y confiable, ideal para enseñar Quidditch."
+  },
+  "Vernon Dursley": {
+    dueño: "Vernon Dursley",
+    madera: "Roble",
+    núcleo: "Pelo de jabalí",
+    longitud: "15 pulgadas",
+    descripcion: "Una varita tosca y poco mágica, reflejando la personalidad grosera de su dueño."
+  },
+  "Petunia Dursley": {
+    dueño: "Petunia Dursley",
+    madera: "Haya",
+    núcleo: "Espina de erizo",
+    longitud: "10 pulgadas",
+    descripcion: "Una varita débil y poco mágica, utilizada para tareas domésticas."
+  },
+  "Newt Scamander": {
+    dueño: "Newt Scamander",
+    madera: "Nogal",
+    núcleo: "Cola de erizo",
+    longitud: "12 pulgadas",
+    descripcion: "Una varita versátil y resistente, ideal para trabajar con criaturas mágicas."
+  },
+  "Gellert Grindelwald": {
+    dueño: "Gellert Grindelwald",
+    madera: "Sauco",
+    núcleo: "Pelo de cola de Thestral",
+    longitud: "14 pulgadas",
+    descripcion: "Una de las Reliquias de la Muerte, conocida por su poder y oscuridad."
+  },
+  "Leta Lestrange": {
+    dueño: "Leta Lestrange",
+    madera: "Ebony",
+    núcleo: "Vena de serpiente",
+    longitud: "11 pulgadas",
+    descripcion: "Una varita oscura y poderosa, reflejando su conexión con la familia Lestrange."
+  },
+  "Tina Goldstein": {
+    dueño: "Tina Goldstein",
+    madera: "Roble",
+    núcleo: "Corazón de dragón",
+    longitud: "13 pulgadas",
+    descripcion: "Una varita fuerte y confiable, utilizada por una Auror experta."
+  },
+  "Queenie Goldstein": {
+    dueño: "Queenie Goldstein",
+    madera: "Laurel",
+    núcleo: "Vela de corazón de mantícora",
+    longitud: "12 pulgadas",
+    descripcion: "Una varita elegante y versátil, capaz de realizar hechizos encantadores."
+  },
+  "Jacob Kowalski": {
+    dueño: "Jacob Kowalski",
+    madera: "Nogal",
+    núcleo: "Cola de unicornio",
+    longitud: "11 pulgadas",
+    descripcion: "Una varita simple y confiable, utilizada por un No-Maj."
+  },
+  "Credence Barebone": {
+    dueño: "Credence Barebone",
+    madera: "Tejo",
+    núcleo: "Pelo de Obscurus",
+    longitud: "15 pulgadas",
+    descripcion: "Una varita oscura y poderosa, conectada a una fuerza oscura."
+  },
+  "Theseus Scamander": {
+    dueño: "Theseus Scamander",
+    madera: "Haya",
+    núcleo: "Cola de fénix",
+    longitud: "13 pulgadas",
+    descripcion: "Una varita elegante y poderosa, utilizada por un Auror experimentado."
+  },
+  "Viktor Krum": {
+    dueño: "Viktor Krum",
+    madera: "Nogal",
+    núcleo: "Cola de dragón",
+    longitud: "13 pulgadas",
+    descripcion: "Una varita poderosa y resistente, ideal para el juego de Quidditch y los hechizos defensivos."
+  },
+  "Cedric Diggory": {
+    dueño: "Cedric Diggory",
+    madera: "Cedro",
+    núcleo: "Cola de unicornio",
+    longitud: "12 pulgadas",
+    descripcion: "Una varita elegante y poderosa, conocida por su capacidad para realizar hechizos complejos."
+  },
+  "Nicolas Flamel": {
+        dueño: "Nicolas Flamel",
+        madera: "Roble",
         núcleo: "Vena de dragón",
-        longitud: "12 pulgadas",
-        descripcion: "La primera varita de Lucius Malfoy, antes de obtener la de Voldemort."
-    },
-    "Dolores Umbridge": {
-        dueño: "Dolores Umbridge",
-        madera: "Avellano",
-        núcleo: "Pena de fénix",
-        longitud: "9 pulgadas",
-        descripcion: "Una varita elegante pero oscura, reflejando la personalidad cruel de su dueña."
-    },
-    "Peter Pettigrew (Colagusano)": {
-        dueño: "Peter Pettigrew",
-        madera: "Abedul",
-        núcleo: "Pelo de rata",
-        longitud: "10 pulgadas",
-        descripcion: "Una varita débil y poco confiable, reflejando la cobardía de su dueño."
-    },
-    "Quirrell": {
-        dueño: "Quirrell",
-        madera: "Olmo",
-        núcleo: "Pelo de unicornio",
-        longitud: "11 pulgadas",
-        descripcion: "Una varita sencilla, utilizada por un mago débil y cobarde."
-    },
-    "Gilderoy Lockhart": {
-        dueño: "Gilderoy Lockhart",
-        madera: "Laurel",
-        núcleo: "Plumas de pavo real",
-        longitud: "12 pulgadas",
-        descripcion: "Una varita vistosa pero ineficaz, utilizada por un mago vanidoso y mentiroso."
-    },
-    "Argus Filch": {
-        dueño: "Argus Filch",
-        madera: "Roble",
-        núcleo: "Espina de puercoespín",
         longitud: "14 pulgadas",
-        descripcion: "Una varita robusta, utilizada para mantener el orden en Hogwarts."
-    },
-    "Madame Hooch": {
-        dueño: "Madame Hooch",
-        madera: "Fresno",
-        núcleo: "Cola de unicornio",
-        longitud: "12 pulgadas",
-        descripcion: "Una varita precisa y confiable, ideal para enseñar Quidditch."
-    },
-    "Vernon Dursley": {
-        dueño: "Vernon Dursley",
-        madera: "Roble",
-        núcleo: "Pelo de jabalí",
-        longitud: "15 pulgadas",
-        descripcion: "Una varita tosca y poco mágica, reflejando la personalidad grosera de su dueño."
-    },
-    "Petunia Dursley": {
-        dueño: "Petunia Dursley",
-        madera: "Haya",
-        núcleo: "Espina de erizo",
-        longitud: "10 pulgadas",
-        descripcion: "Una varita débil y poco mágica, utilizada para tareas domésticas."
+        descripcion: "Una varita antigua y poderosa, capaz de realizar hechizos de transmutación y alquimia."
     },
 };
 
