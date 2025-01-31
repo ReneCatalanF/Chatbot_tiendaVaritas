@@ -367,7 +367,8 @@ app.post('/webhook', (req, res) => {
         respuesta += `Madera: ${varitaEncontrada.madera}\n`;
         respuesta += `Núcleo: ${varitaEncontrada.nucleo}\n`;
         respuesta += `Longitud: ${varitaEncontrada.longitud}\n`;
-        respuesta += `Descripción: ${varitaEncontrada.descripcion}`;
+        respuesta += `Descripción: ${varitaEncontrada.descripcion}\n\n`;
+        respuesta += `Si quieres saber sobre otras varitas, vuelve a saludarnos!`;
 
 
         console.log("CREAMOS STRING DUEÑO ENCONTRADO: ", respuesta);
